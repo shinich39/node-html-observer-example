@@ -6,17 +6,15 @@ import fs from "node:fs";
 import path from "node:path";
 
 const PORT = 3000;
-const ROOT = "./src";
 
 const SCRIPT_DATA = fs.readFileSync("./script.js", "utf8")
   .replace("new WebSocket();", `new WebSocket("ws://127.0.0.1:${PORT}/");`)
 
 const server = http.createServer((req, res) => {
   const url = req.url;
-  const filePath = path.join(ROOT, url);
-
-  if (req.url === "/") {
-    res.writeHead(302, { Location: "/index.html" });
+  const filePath = path.join(".", url);
+  if (url === "/") {
+    res.writeHead(302, { Location: "src/index.html" });
     res.end();
   } else if (!fs.existsSync(filePath)) {
     res.writeHead(404);
@@ -27,8 +25,11 @@ const server = http.createServer((req, res) => {
       .replace("</body>", `<script>${SCRIPT_DATA}</script></body>`);
     res.write(data);
     res.end();
-  } else {
+  } else if (path.extname(filePath) !== "") {
     res.write(fs.readFileSync(filePath, "utf8"));
+    res.end();
+  } else {
+    res.writeHead(404);
     res.end();
   }
 });
