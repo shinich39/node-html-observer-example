@@ -1,0 +1,23 @@
+{
+  "name": "node-html-observer-example",
+  "version": "1.0.0",
+  "description": "Example of observing html via http",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon --ext js,mjs,cjs,json,html index.js",
+    "pretty": "prettier index.js --write --config .prettierrc.js"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "shinich39 <shinich39@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.7",
+    "websocket": "^1.0.35"
+  }
+}
