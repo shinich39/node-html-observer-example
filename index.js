@@ -8,40 +8,8 @@ import path from "node:path";
 const PORT = 3000;
 const ROOT = "./src";
 
-const SCRIPT_DATA = `
-  let isReconnection = false;
-
-  function connect() {
-    console.log("Start observer connection...");
-
-    const socket = new WebSocket("ws://127.0.0.1:${PORT}/");
-
-    socket.addEventListener("open", (event) => {
-      console.log("Connection succeeded");
-      if (!isReconnection) {
-        isReconnection = true;
-      } else {
-        window.location.reload();
-      }
-    });
-
-    socket.addEventListener("close", (event) => {
-      setTimeout(function() {
-        connect();
-      }, 128);
-    });
-
-    socket.addEventListener("error", (event) => {
-      socket.close();
-    });
-
-    socket.addEventListener("message", (event) => {
-      console.log("Message from observer ", event.data);
-    });
-  }
-
-  connect();
-`;
+const SCRIPT_DATA = fs.readFileSync("./script.js", "utf8")
+  .replace("new WebSocket();", `new WebSocket("ws://127.0.0.1:${PORT}/");`)
 
 const server = http.createServer((req, res) => {
   const url = req.url;
