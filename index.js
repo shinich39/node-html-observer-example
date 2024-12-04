@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
     res.write(data);
     res.end();
   } else if (path.extname(filePath) !== "") {
-    res.write(fs.readFileSync(filePath, "utf8"));
+    res.write(fs.readFileSync(filePath));
     res.end();
   } else {
     res.writeHead(404);
